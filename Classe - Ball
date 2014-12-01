@@ -1,0 +1,56 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+public class Ball extends GameObject {
+	private Vector2f velocity;
+
+	public Ball(Vector2f position, GamePaniel panel) {
+		this.position = position;
+		this.panel = panel;
+
+		width = 10;
+		height = 10;
+
+		velocity = Vector2f.randomVector(100, 200);
+	}
+
+	@Override
+	public void render(Graphics2D target) {
+		target.setColor(Color.blue);
+		target.fillRect((int) (position.x - width / 2),
+				(int) (position.y - height / 2), width, height);
+	}
+
+	@Override
+	public void update() {
+		Vector2f lastPosition = new Vector2f(position.x, position.y);
+
+		position.x += velocity.x * Time.DELTA;
+		position.y += velocity.y * Time.DELTA;
+
+		if (position.x <= GamePaniel.tela_width) {
+			if (position.x <= 0) {
+				panel.rightPlayer.points += 1;	
+				panel.resetGame();
+			}
+		}else{
+			panel.leftPlayer.points += 1;
+			panel.resetGame();
+		}
+
+		if (position.y > GamePaniel.tela_height || position.y < 0) {
+			velocity.y *= -1;
+			position = lastPosition;
+		}
+
+		for (GameObject object : panel.objects) {
+			if (object != this) {
+				if (isCollision(object)) {
+					//Velocidade da bolinha 
+					velocity.x *= -1;
+					position = lastPosition;
+				}
+			}
+		}
+	}
+}
