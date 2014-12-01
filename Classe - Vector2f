@@ -1,0 +1,30 @@
+import java.util.Random;
+
+public class Vector2f {
+	static public Random random = new Random();
+	
+	public float x;
+	public float y;
+
+	public Vector2f() {
+		x = 0;
+		y = 0;
+	}
+
+	public Vector2f(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public static Vector2f randomVector(int range){
+		 return new Vector2f(random.nextInt(range + 1), random.nextInt(range + 1));
+	}
+	
+	static public Vector2f randomVector(float start, float end) {
+		return new Vector2f(random(start, end), random(start, end));
+	}
+	
+	static public float random(float start, float end) {
+		return start + random.nextFloat() * (end - start);
+	}
+}
