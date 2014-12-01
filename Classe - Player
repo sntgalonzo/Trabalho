@@ -1,0 +1,47 @@
+import java.awt.Color;
+import java.awt.Graphics2D; 
+
+public class Player extends GameObject {
+	private Vector2f velocity;
+
+	public boolean up;
+	public boolean down;
+	
+	public int points;
+
+	public Player(Vector2f position, GamePaniel panel) {
+		this.position = position;
+		this.panel = panel;
+		
+		width = 20;
+		height = 20;
+		
+		points = 0;
+
+		velocity = new Vector2f(0, 500);
+	}
+
+	@Override
+	public void render(Graphics2D target) {
+		target.setColor(Color.white);
+		target.fillRect((int) (position.x), (int) (position.y),
+				width, height);
+	}
+
+	@Override
+	public void update() {
+		if (position.y + height <= GamePaniel.tela_height) {
+			if (position.y >= 0) {
+				if (up) {
+					position.y -= velocity.y * Time.DELTA;
+				} else if (down) {
+					position.y += velocity.y * Time.DELTA;
+				}
+			}else{
+				position.y = 0;
+			}
+		}else{
+			position.y = GamePaniel.tela_height - height;
+		}
+	}
+}
